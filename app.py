@@ -16,18 +16,18 @@ def index():
 
 @app.route('/add', methods=['POST']) #route for adding a new todo
 def add_todo():
-    todo_item= request.form.get['todo'] #getting the todo item from the form
+    todo_item= request.form.get('todo') #getting the todo item from the form
     todos_collection.insert_one({"task": todo_item , "completed" :False}) #inserting the todo item into the database
     return redirect(url_for('index')) #redirecting to the index page
 
-@app.route("/delete/<todo_id>", methods= ["GET"])#route for deleting a todo
+@app.route("/delete/<todo_id>", methods= ["POST"])#route for deleting a todo
 def delete_todo(todo_id):
     todos_collection.delete_one({"_id": ObjectId(todo_id)}) #deleting the todo from the database
     return redirect(url_for('index')) #redirecting to the index page
 
 
 
-@app.route("/toggle/<todo_id>", methods= ["GET"])#route for toggling a todo
+@app.route("/toggle/<todo_id>", methods= ["POST"])#route for toggling a todo
 def toggle_todo(todo_id):
     todo = todos_collection.find_one({"_id": ObjectId(todo_id)}) #fetching the todo from the database
     todos_collection.update_one({"_id": ObjectId(todo_id)}, {"$set": {"completed": not todo["completed"]}}) #toggling the completed status of the todo
