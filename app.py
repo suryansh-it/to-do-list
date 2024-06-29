@@ -1,5 +1,6 @@
 from flask import Flask , render_template, request, redirect , url_for, jsonify
 from pymongo import MongoClient
+from bson.objectid import ObjectId #Imported ObjectId from bson to correctly identify and manipulate MongoDB documents
 
 app = Flask(__name__)
 
@@ -8,7 +9,7 @@ client = MongoClient('localhost', 27017)  # Default port used if no port provide
 db = client.todo_db
 todos_collection = db.todos
 
-@app.route('/') 
+@app.route('/')  #The main route renders the list of to-do items.
 def index():
     todos= list(todos_collection.find()) #fetching all the todos from the database
     return render_template('index.html',todos=todos) #passing the todos to the template

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Todo List</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+  </head>
+  <body>
+    <h1>Todo List</h1>
+    <form action="/add" method="post">
+      <input type="text" name="todo" placeholder="Enter a new task" />
+      <button type="submit">Add</button>
+    </form>
+    <ul>
+      <!-- Starts the loop, iterating over each todo item in the todos list. -->
+      {% for todo in todos %}
+
+      <!-- Creates a list item (<li>) for each todo. The class attribute is dynamically set to completed if todo.completed is True; otherwise, it’s set to an empty string. -->
+      <li class="{{ 'completed' if todo.completed else '' }}">
+        <!-- This outputs the task description of the current todo item. -->
+        {{ todo.task }}
+        <form
+          action="/toggle/{{ todo._id }}"
+          method="post"
+          style="display: inline"
+        >
+          <button type="submit">
+            {{ 'Undo' if todo.completed else 'Complete' }}
+          </button>
+        </form>
+        <form
+          action="/delete/{{ todo._id }}"
+          method="post"
+          style="display: inline"
+        >
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+      <!-- Ends the loop. -->
+      {% endfor %}
+    </ul>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+  </body>
+</html>
+
+<!-- {{vaariable }} example {{username}} == Alice -->
+
+<!-- python : data = {"name": "Alice", "age": 30}
+html 
+<p>Name: {{ data.name }}</p>
+<p>Age: {{ data.age }}</p>
+
+result : <p>Name: Alice</p>
+<p>Age: 30</p> -->
